@@ -12,6 +12,10 @@
   --score-size: 120px;
   --token: 68px;
   --divider-h: 8px;
+
+  --score-digits: 3;
+  --btn-width: 54px; /* narrower than before; bump to 58 if tight */
+  --btn-height: 48px;
 }
 
 /* Mobile portrait focus */
@@ -44,12 +48,10 @@ body {
 }
 
 /* Halves */
-.half {
-  flex: 1 1 50%;
+.half-inner {
   display: grid;
-  place-items: center;
-  position: relative;
-  color: #fff;
+  grid-template-rows: auto auto 1fr; /* was: auto 1fr */
+  gap: 14px; /* slightly tighter */
 }
 
 .half.rotated .half-inner {
@@ -92,35 +94,66 @@ body {
   align-items: center;
   gap: 12px;
 }
-
+.score-big{
+  width: 100%;
+  text-align: center;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  white-space: nowrap;
+  /* big but responsive; keep existing --score-size fallback */
+  font-size: clamp(72px, 22vw, var(--score-size, 120px));
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 3px 14px rgba(0,0,0,.35);
+}
 .btn-stack {
   display: grid;
-  gap: var(--btn-gap);
+  gap: var(--btn-gap, 8px);
+  align-items: center;
 }
 
 .score-btn {
-  min-width: var(--btn-size);
-  height: var(--btn-size);
-  border-radius: 14px;
+  inline-size: var(--btn-width);
+  block-size: var(--btn-height);
+  padding: 0; /* kill default padding */
+  display: inline-flex; /* reliable centering */
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* vertical centering */
+  font-size: 18px; /* a touch smaller helps +10 fit */
+  font-weight: 800;
   border: none;
-  font-size: 22px;
-  font-weight: 700;
-  color: #111;
+  border-radius: 12px;
   background: #fff;
-  cursor: pointer;
+  color: #111;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 .score-btn:active {
   transform: translateY(1px);
 }
 
-.score {
+/* .score {
   text-align: center;
   font-size: var(--score-size);
   font-weight: 900;
   line-height: 1;
   color: #fff;
   text-shadow: 0 3px 14px rgba(0, 0, 0, 0.35);
+} */
+
+.score {
+  /* keep width stable per digit */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1; /* Safari/back-compat */
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+
+  min-width: calc(var(--score-digits) * 1ch);
+  /* font-size: clamp(72px, 22vw, var(--score-size, 120px)); */
 }
 
 /* Middle divider */
@@ -154,6 +187,7 @@ body {
 
 /* Coin token */
 .coin {
+  margin: 2px auto 0);
   width: 72px;
   height: 72px;
   padding: 0;

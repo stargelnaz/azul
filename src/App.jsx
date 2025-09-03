@@ -116,10 +116,16 @@ function PlayerHalf({
   return (
     <section className={`half ${rotated}`} style={{ backgroundColor: bg }}>
       <div className='half-inner'>
+        {/* WIDE total above coin */}
+        <div className='score-big' aria-live='polite'>
+          {score}
+        </div>
+
+        {/* Coin below the total */}
         <CoinToken used={coinUsed} onUse={onUseCoin} onReset={onResetCoin} />
 
+        {/* Controls row: left stack | spacer | right stack */}
         <div className='score-row'>
-          {/* LEFT: + stack with rolling subtotal */}
           <div className='stack-wrap'>
             <RollingSubtotal value={subPlus} visible={showPlus} side='left' />
             <ButtonStack
@@ -141,11 +147,8 @@ function PlayerHalf({
             />
           </div>
 
-          <div className='score' aria-live='polite'>
-            {score}
-          </div>
+          <div className='spacer' />
 
-          {/* RIGHT: - stack with rolling subtotal */}
           <div className='stack-wrap'>
             <RollingSubtotal
               value={subMinus}
@@ -153,7 +156,7 @@ function PlayerHalf({
               side='right'
             />
             <ButtonStack
-              labels={['-1', '-2', '-3']}
+              labels={['\u22121', '\u22122', '\u22123']} // −1 −2 −3
               onClicks={[
                 () => {
                   onMinus(1);
